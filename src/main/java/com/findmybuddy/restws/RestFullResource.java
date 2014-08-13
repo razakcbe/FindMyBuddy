@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.findmybuddy.restws.service.MyLocationService;
+import com.findmybuddy.restws.utils.FindMyBuddyConstants;
 
 /**
  * 
@@ -25,15 +26,16 @@ import com.findmybuddy.restws.service.MyLocationService;
 "lastDetectedTime":"rrsadaff"
 }*/
 @Component
-@Path("findmybuddy")
+@Path(FindMyBuddyConstants.TARGETPATH_FINDMYBUDDY)
 public class RestFullResource
 {
 
 	@Autowired
 	MyLocationService locationService;
 	
-	@Path("/mylocation")
+	
 	@POST
+	@Path(FindMyBuddyConstants.PATH_MY_LOCATION)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveMyLocation(String location)
@@ -43,8 +45,9 @@ public class RestFullResource
 	}
 	
 	
-	@Path("/mydetails")
+	
 	@POST
+	@Path(FindMyBuddyConstants.PATH_MY_DETAILS)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveMyDetails(String myDetails)

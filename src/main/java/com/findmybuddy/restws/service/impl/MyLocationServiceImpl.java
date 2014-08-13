@@ -42,8 +42,6 @@ public class MyLocationServiceImpl implements MyLocationService{
 		try {
 			locationObj = mapper.readValue(location, MyLocationDto.class);
 			MyLocation myLocation = populateLocationFromDto(locationObj);
-			//MyDetails details = locationDaoImpl.getMyDetails(locationObj.getNumber());
-			//myLocation.setDetails(details);
 			locationDaoImpl.saveMyLocation(myLocation);
 
 		} catch (JsonParseException e) {
@@ -56,7 +54,7 @@ public class MyLocationServiceImpl implements MyLocationService{
 
 		return locationObj.toString();
 	}
-	
+
 	public MyLocation populateLocationFromDto(MyLocationDto dto){
 		MyLocation location =  new MyLocation();
 		location.setLastDetectedLocation(dto.getLastDetectedLocation());
@@ -69,7 +67,7 @@ public class MyLocationServiceImpl implements MyLocationService{
 
 	@Override
 	public void saveMyDetails(String myDetails) {
-		
+
 		MyDetailsDto detailsDto = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -83,7 +81,7 @@ public class MyLocationServiceImpl implements MyLocationService{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private MyDetails populateDetailsFromDto(MyDetailsDto detailsDto) {
