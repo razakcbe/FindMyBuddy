@@ -27,6 +27,7 @@ public class MyLocationServiceImpl implements MyLocationService{
 
 	@Autowired
 	MyLocationDao locationDaoImpl;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -35,22 +36,14 @@ public class MyLocationServiceImpl implements MyLocationService{
 	 * lang.String)
 	 */
 	@Override
-	public String saveMyLocation(String location) {
+	public String saveMyLocation(String location) throws JsonParseException, JsonMappingException, IOException {
 
 		MyLocationDto locationObj = null;
 		ObjectMapper mapper = new ObjectMapper();
-		try {
-			locationObj = mapper.readValue(location, MyLocationDto.class);
-			MyLocation myLocation = populateLocationFromDto(locationObj);
-			locationDaoImpl.saveMyLocation(myLocation);
+		locationObj = mapper.readValue(location, MyLocationDto.class);
+		MyLocation myLocation = populateLocationFromDto(locationObj);
+		locationDaoImpl.saveMyLocation(myLocation);
 
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		return locationObj.toString();
 	}
@@ -66,21 +59,13 @@ public class MyLocationServiceImpl implements MyLocationService{
 	}
 
 	@Override
-	public void saveMyDetails(String myDetails) {
+	public void saveMyDetails(String myDetails) throws JsonParseException, JsonMappingException, IOException {
 
 		MyDetailsDto detailsDto = null;
 		ObjectMapper mapper = new ObjectMapper();
-		try {
-			detailsDto = mapper.readValue(myDetails, MyDetailsDto.class);
-			locationDaoImpl.saveMyDetails(populateDetailsFromDto(detailsDto));
 
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		detailsDto = mapper.readValue(myDetails, MyDetailsDto.class);
+		locationDaoImpl.saveMyDetails(populateDetailsFromDto(detailsDto));
 
 	}
 

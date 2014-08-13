@@ -41,7 +41,7 @@ public class MyLocationDaoImpl implements MyLocationDao {
 		MyDetails details = entityManager.find(MyDetails.class,number);
 		return details;
 	}
-	
-	
+
+
 
 }
