@@ -12,13 +12,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.findmybuddy.restws.exception.MyBuddyException;
 import com.findmybuddy.restws.service.MyLocationService;
 import com.findmybuddy.restws.utils.FindMyBuddyConstants;
 
@@ -42,7 +40,7 @@ public class RestFullResource
 	@Autowired
 	MyLocationService locationService;
 
-	private static final Logger logger = LoggerFactory.getLogger(RestFullResource.class);
+	//private static final Logger logger = LoggerFactory.getLogger(RestFullResource.class);
 
 
 	@POST
@@ -51,14 +49,19 @@ public class RestFullResource
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response saveMyLocation(String location)
 	{
-		try {
+		try 
+		{
 			locationService.saveMyLocation(location);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} 
+		catch (JsonGenerationException e) 
+		{
+			throw new MyBuddyException("JsonGenerationException while storing my location");
+		} catch (JsonMappingException e) 
+		{
+			throw new MyBuddyException("JsonMappingException while storing my location");
+		} catch (IOException e) 
+		{
+			throw new MyBuddyException("IOException while storing my location");
 		}
 		return Response.status(200).entity(location).build();
 	}
@@ -72,14 +75,19 @@ public class RestFullResource
 	public Response saveMyDetails(String myDetails)
 	{
 
-		try {
+		try 
+		{
 			locationService.saveMyDetails(myDetails);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} 
+		catch (JsonGenerationException e) 
+		{
+			throw new MyBuddyException("JsonGenerationException storing  my location");
+		} catch (JsonMappingException e)
+		{
+			throw new MyBuddyException("JsonMappingException storing getting my location");
+		} catch (IOException e) 
+		{
+			throw new MyBuddyException("IOException while storing my location");
 		}
 		return Response.status(200).entity(myDetails).build();
 	}
@@ -90,23 +98,32 @@ public class RestFullResource
 	public Response getMylocation(@PathParam("mobileNo") String mobileNo)
 	{
 		String response = null;
-		try {
+		try 
+		{
 			response = locationService.getMyLocation(mobileNo);
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			if(response == null)
+			{
+				throw new MyBuddyException("No location has been found for the given number");
+			}
+		} 
+		catch (JsonGenerationException e) 
+		{
+			throw new MyBuddyException("JsonGenerationException while getting Friend location");
+		} catch (JsonMappingException e) 
+		{
+			throw new MyBuddyException("JsonMappingException while getting Friend location");
+		} catch (IOException e) 
+		{
+			throw new MyBuddyException("IOException while getting Friend location");
 		}
 		return Response.status(200).entity(response).build();
 
 	}
-	
+
 	@GET
 	public Response getHealthCheck(){
 		return Response.status(200).entity("OK").build();
 	}
-	
+
 
 }

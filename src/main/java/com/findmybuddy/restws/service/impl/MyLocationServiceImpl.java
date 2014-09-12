@@ -12,14 +12,13 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import scala.annotation.meta.getter;
-
 import com.findmybuddy.restws.dao.MyLocationDao;
 import com.findmybuddy.restws.domain.MyDetails;
 import com.findmybuddy.restws.domain.MyLocation;
 import com.findmybuddy.restws.dto.MyDetailsDto;
 import com.findmybuddy.restws.dto.MyLocationDto;
 import com.findmybuddy.restws.service.MyLocationService;
+import com.findmybuddy.restws.utils.DateUtils;
 
 /**
  * @author Razak
@@ -64,10 +63,13 @@ public class MyLocationServiceImpl implements MyLocationService{
 
 	@Override
 	public String getMyLocation(String number) throws JsonGenerationException, JsonMappingException, IOException {
+		String jsonLocation = null;
 		ObjectMapper mapper = new ObjectMapper();
 		MyLocation location = locationDaoImpl.getMyLocation(number);
-		MyLocationDto locationDto = populateToDto(location);
-		String jsonLocation = mapper.writeValueAsString(location);
+		if(location !=null){
+			MyLocationDto locationDto = populateToDto(location);
+			jsonLocation = mapper.writeValueAsString(locationDto);
+		}
 		return jsonLocation;
 	}
 	
@@ -75,7 +77,7 @@ public class MyLocationServiceImpl implements MyLocationService{
 	private MyLocationDto populateToDto(MyLocation location) {
 		MyLocationDto locationDto =  new MyLocationDto();
 		locationDto.setLastDetectedLocation(location.getLastDetectedLocation());
-		locationDto.setLastDetectedTime(location.getLastDetectedTime().toString());
+		locationDto.setLastDetectedTime(DateUtils.getDateAsString(location.getLastDetectedTime()));
 		locationDto.setLatitude(location.getLatitude());
 		locationDto.setLongitude(location.getLongitude());
 		locationDto.setNumber(location.getNumber());
