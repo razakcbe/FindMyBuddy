@@ -6,10 +6,13 @@ package com.findmybuddy.restws.service.impl;
 import java.io.IOException;
 import java.util.Date;
 
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import scala.annotation.meta.getter;
 
 import com.findmybuddy.restws.dao.MyLocationDao;
 import com.findmybuddy.restws.domain.MyDetails;
@@ -48,16 +51,6 @@ public class MyLocationServiceImpl implements MyLocationService{
 		return locationObj.toString();
 	}
 
-	public MyLocation populateLocationFromDto(MyLocationDto dto){
-		MyLocation location =  new MyLocation();
-		location.setLastDetectedLocation(dto.getLastDetectedLocation());
-		location.setLastDetectedTime(new Date());
-		location.setLatitude(dto.getLatitude());
-		location.setLongitude(dto.getLongitude());
-		location.setNumber(dto.getNumber());
-		return location;
-	}
-
 	@Override
 	public void saveMyDetails(String myDetails) throws JsonParseException, JsonMappingException, IOException {
 
@@ -69,6 +62,26 @@ public class MyLocationServiceImpl implements MyLocationService{
 
 	}
 
+	@Override
+	public String getMyLocation(String number) throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		MyLocation location = locationDaoImpl.getMyLocation(number);
+		MyLocationDto locationDto = populateToDto(location);
+		String jsonLocation = mapper.writeValueAsString(location);
+		return jsonLocation;
+	}
+	
+	
+	private MyLocationDto populateToDto(MyLocation location) {
+		MyLocationDto locationDto =  new MyLocationDto();
+		locationDto.setLastDetectedLocation(location.getLastDetectedLocation());
+		locationDto.setLastDetectedTime(location.getLastDetectedTime().toString());
+		locationDto.setLatitude(location.getLatitude());
+		locationDto.setLongitude(location.getLongitude());
+		locationDto.setNumber(location.getNumber());
+		return locationDto;
+	}
+
 	private MyDetails populateDetailsFromDto(MyDetailsDto detailsDto) {
 		MyDetails details = new MyDetails();
 		details.setEmail(detailsDto.getEmail());
@@ -76,6 +89,16 @@ public class MyLocationServiceImpl implements MyLocationService{
 		details.setNumber(detailsDto.getNumber());
 		details.setPassWord(detailsDto.getPassWord());
 		return details;
+	}
+
+	private MyLocation populateLocationFromDto(MyLocationDto dto){
+		MyLocation location =  new MyLocation();
+		location.setLastDetectedLocation(dto.getLastDetectedLocation());
+		location.setLastDetectedTime(new Date());
+		location.setLatitude(dto.getLatitude());
+		location.setLongitude(dto.getLongitude());
+		location.setNumber(dto.getNumber());
+		return location;
 	}
 
 }

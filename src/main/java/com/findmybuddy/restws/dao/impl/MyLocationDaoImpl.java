@@ -41,6 +41,11 @@ public class MyLocationDaoImpl implements MyLocationDao {
 		MyDetails details = entityManager.find(MyDetails.class,number);
 		return details;
 	}
+	@Override
+	public MyLocation getMyLocation(String number) {
+		MyLocation mylocation = entityManager.find(MyLocation.class,number);
+		return mylocation;
+	}
 
 
 

@@ -1,16 +1,17 @@
 package com.findmybuddy.restws;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
@@ -45,21 +46,19 @@ public class RestFullResource
 
 
 	@POST
-	@Path(FindMyBuddyConstants.PATH_MY_LOCATION)
+	@Path(FindMyBuddyConstants.PATH_UPDATE_MY_LOCATION)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response saveMyLocation(String location) throws MyException
+	public Response saveMyLocation(String location)
 	{
 		try {
 			locationService.saveMyLocation(location);
 		} catch (JsonParseException e) {
-			throw new MyException(e.getMessage());
+			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			throw new MyException(e.getMessage());
+			e.printStackTrace();
 		} catch (IOException e) {
-			throw new MyException(e.getMessage());
-		} catch (Exception e) {
-			throw new MyException(e.getMessage());
+			e.printStackTrace();
 		}
 		return Response.status(200).entity(location).build();
 	}
@@ -67,26 +66,47 @@ public class RestFullResource
 
 
 	@POST
-	@Path(FindMyBuddyConstants.PATH_MY_DETAILS)
+	@Path(FindMyBuddyConstants.PATH_CREATE_MY_DETAILS)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response saveMyDetails(String myDetails) throws MyException
+	public Response saveMyDetails(String myDetails)
 	{
 
 		try {
 			locationService.saveMyDetails(myDetails);
 		} catch (JsonParseException e) {
-			throw new MyException(e.getMessage());
+			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			throw new MyException(e.getMessage());
+			e.printStackTrace();
 		} catch (IOException e) {
-			throw new MyException(e.getMessage());
-		} catch (Exception e) {
-			throw new MyException(e.getMessage());
+			e.printStackTrace();
 		}
 		return Response.status(200).entity(myDetails).build();
 	}
 
+	@GET
+	@Path(FindMyBuddyConstants.PATH_GET_MY_DETAILS)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMylocation(@PathParam("mobileNo") String mobileNo)
+	{
+		String response = null;
+		try {
+			response = locationService.getMyLocation(mobileNo);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity(response).build();
 
+	}
+	
+	@GET
+	public Response getHealthCheck(){
+		return Response.status(200).entity("OK").build();
+	}
+	
 
 }

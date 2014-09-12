@@ -13,5 +13,7 @@ public interface MyLocationDao {
 	public void saveMyDetails(MyDetails myDetails);
 	
 	public MyDetails getMyDetails(String number);
+	
+	public MyLocation getMyLocation(String number);
 
 }
