@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.cxf.rs.security.cors.CrossOriginResourceSharing;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,9 @@ import com.findmybuddy.restws.utils.FindMyBuddyConstants;
 "latitude":"rrrrrr",
 "longitude":"aaaaaaaa",
 "lastDetectedLocation":"aaaaaa",
-"lastDetectedTime":"rrsadaff"
 }*/
+
+@CrossOriginResourceSharing(allowAllOrigins = true)
 @Component
 @Path(FindMyBuddyConstants.TARGETPATH_FINDMYBUDDY)
 public class RestFullResource
@@ -63,7 +65,7 @@ public class RestFullResource
 		{
 			throw new MyBuddyException("IOException while storing my location");
 		}
-		return Response.status(200).entity(location).build();
+		return getResponse("OK");
 	}
 
 
@@ -89,7 +91,7 @@ public class RestFullResource
 		{
 			throw new MyBuddyException("IOException while storing my location");
 		}
-		return Response.status(200).entity(myDetails).build();
+		return getResponse("OK");
 	}
 
 	@GET
@@ -116,13 +118,17 @@ public class RestFullResource
 		{
 			throw new MyBuddyException("IOException while getting Friend location");
 		}
-		return Response.status(200).entity(response).build();
+		return getResponse(response);
 
 	}
 
 	@GET
 	public Response getHealthCheck(){
 		return Response.status(200).entity("OK").build();
+	}
+	
+	public Response getResponse(String messge){
+		return Response.status(200).entity(messge).header("Access-Control-Allow-0rigin", "*").header("Access-Control-Allow-Methods", "API, CRUNCHIFYGET, GET, POST, PUT, UPDATE, OPTIONS").build();
 	}
 
 
