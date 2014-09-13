@@ -8,6 +8,7 @@ public class FindMyBuddyConstants {
 	
 	public static final String PATH_CREATE_MY_DETAILS = "updatemydetail";
 	
-	public static final String PATH_GET_MY_DETAILS = "getmydetail/{mobileNo}";
+	public static final String PATH_GET_MY_DETAILS = "getmylocation/{mobileNo}";
 
+	public static final String PATH_GET_MY_BUDDY_DETAILS = "getmybuddybdetail/{mobileNo}";
 }

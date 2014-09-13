@@ -11,9 +11,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.cxf.rs.security.cors.CrossOriginResourceSharing;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +26,7 @@ import com.findmybuddy.restws.utils.FindMyBuddyConstants;
  * @author Razak
  *
  */
+
 /*{
 "number":"8123695220",
 "latitude":"rrrrrr",
@@ -33,7 +34,6 @@ import com.findmybuddy.restws.utils.FindMyBuddyConstants;
 "lastDetectedLocation":"aaaaaa",
 }*/
 
-@CrossOriginResourceSharing(allowAllOrigins = true)
 @Component
 @Path(FindMyBuddyConstants.TARGETPATH_FINDMYBUDDY)
 public class RestFullResource
@@ -64,6 +64,8 @@ public class RestFullResource
 		} catch (IOException e) 
 		{
 			throw new MyBuddyException("IOException while storing my location");
+		} catch (JSONException e) {
+			throw new MyBuddyException("JSONException while storing my location");
 		}
 		return getResponse("OK");
 	}
@@ -121,6 +123,8 @@ public class RestFullResource
 		return getResponse(response);
 
 	}
+	
+	
 
 	@GET
 	public Response getHealthCheck(){

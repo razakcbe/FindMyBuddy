@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jettison.json.JSONException;
 
 
 /**
@@ -16,7 +17,7 @@ import org.codehaus.jackson.map.JsonMappingException;
  */
 public interface MyLocationService {
 
-	public String saveMyLocation(String location) throws JsonParseException, JsonMappingException, IOException;
+	public String saveMyLocation(String location) throws JsonParseException, JsonMappingException, IOException , JSONException;
 
 	public void saveMyDetails(String myDetails) throws JsonParseException, JsonMappingException, IOException;
 	

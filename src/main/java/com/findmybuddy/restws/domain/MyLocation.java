@@ -22,10 +22,10 @@ public class MyLocation {
 	@Column(name = "longitude" ,nullable = false, length=50)
 	private String longitude;
 
-	@Column(name = "lastDetectedLocation",nullable = false, length=50)
+	@Column(name = "lastDetectedLocation",nullable = false, length=400)
 	private String lastDetectedLocation;
 
-	@Column(name = "lastDetectedTime",nullable = false)
+	@Column(name = "lastDetectedTime",nullable = false,length = 50)
 	private Date lastDetectedTime;
 
 	public String getLatitude() {

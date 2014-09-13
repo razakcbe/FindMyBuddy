@@ -10,6 +10,7 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.findmybuddy.restws.dao.MyLocationDao;
@@ -17,6 +18,7 @@ import com.findmybuddy.restws.domain.MyDetails;
 import com.findmybuddy.restws.domain.MyLocation;
 import com.findmybuddy.restws.dto.MyDetailsDto;
 import com.findmybuddy.restws.dto.MyLocationDto;
+import com.findmybuddy.restws.googleclient.GoogleAddressClient;
 import com.findmybuddy.restws.service.MyLocationService;
 import com.findmybuddy.restws.utils.DateUtils;
 
@@ -38,12 +40,14 @@ public class MyLocationServiceImpl implements MyLocationService{
 	 * lang.String)
 	 */
 	@Override
-	public String saveMyLocation(String location) throws JsonParseException, JsonMappingException, IOException {
+	public String saveMyLocation(String location) throws JsonParseException, JsonMappingException, IOException, JSONException {
 
 		MyLocationDto locationObj = null;
 		ObjectMapper mapper = new ObjectMapper();
 		locationObj = mapper.readValue(location, MyLocationDto.class);
 		MyLocation myLocation = populateLocationFromDto(locationObj);
+		String address = GoogleAddressClient.getAddressFromCoordinates(locationObj.getLatitude(),locationObj.getLongitude());
+		myLocation.setLastDetectedLocation(address);
 		locationDaoImpl.saveMyLocation(myLocation);
 
 
@@ -76,7 +80,6 @@ public class MyLocationServiceImpl implements MyLocationService{
 	
 	private MyLocationDto populateToDto(MyLocation location) {
 		MyLocationDto locationDto =  new MyLocationDto();
-		locationDto.setLastDetectedLocation(location.getLastDetectedLocation());
 		locationDto.setLastDetectedTime(DateUtils.getDateAsString(location.getLastDetectedTime()));
 		locationDto.setLatitude(location.getLatitude());
 		locationDto.setLongitude(location.getLongitude());
