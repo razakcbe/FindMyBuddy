@@ -30,8 +30,7 @@ import com.findmybuddy.restws.utils.FindMyBuddyConstants;
 /*{
 "number":"8123695220",
 "latitude":"rrrrrr",
-"longitude":"aaaaaaaa",
-"lastDetectedLocation":"aaaaaa",
+"longitude":"aaaaaaaa"
 }*/
 
 @Component
@@ -41,8 +40,6 @@ public class RestFullResource
 
 	@Autowired
 	MyLocationService locationService;
-
-	//private static final Logger logger = LoggerFactory.getLogger(RestFullResource.class);
 
 
 	@POST
@@ -57,15 +54,15 @@ public class RestFullResource
 		} 
 		catch (JsonGenerationException e) 
 		{
-			throw new MyBuddyException("JsonGenerationException while storing my location");
+			throw new MyBuddyException("JsonGenerationException while storing my location" + e.getMessage()  );
 		} catch (JsonMappingException e) 
 		{
-			throw new MyBuddyException("JsonMappingException while storing my location");
+			throw new MyBuddyException("JsonMappingException while storing my location" + e.getMessage()  );
 		} catch (IOException e) 
 		{
-			throw new MyBuddyException("IOException while storing my location");
+			throw new MyBuddyException("IOException while storing my location" + e.getMessage()  );
 		} catch (JSONException e) {
-			throw new MyBuddyException("JSONException while storing my location");
+			throw new MyBuddyException("JSONException while storing my location" + e.getMessage()  );
 		}
 		return getResponse("OK");
 	}
@@ -85,13 +82,13 @@ public class RestFullResource
 		} 
 		catch (JsonGenerationException e) 
 		{
-			throw new MyBuddyException("JsonGenerationException storing  my location");
+			throw new MyBuddyException("JsonGenerationException storing  my location" + e.getMessage()  );
 		} catch (JsonMappingException e)
 		{
-			throw new MyBuddyException("JsonMappingException storing getting my location");
+			throw new MyBuddyException("JsonMappingException storing getting my location" + e.getMessage()  );
 		} catch (IOException e) 
 		{
-			throw new MyBuddyException("IOException while storing my location");
+			throw new MyBuddyException("IOException while storing my location" + e.getMessage()  );
 		}
 		return getResponse("OK");
 	}
@@ -107,30 +104,44 @@ public class RestFullResource
 			response = locationService.getMyLocation(mobileNo);
 			if(response == null)
 			{
-				throw new MyBuddyException("No location has been found for the given number");
+				throw new MyBuddyException("No location has been found for the given number" );
 			}
 		} 
 		catch (JsonGenerationException e) 
 		{
-			throw new MyBuddyException("JsonGenerationException while getting Friend location");
+			throw new MyBuddyException("JsonGenerationException while getting Friend location" + e.getMessage()  );
 		} catch (JsonMappingException e) 
 		{
-			throw new MyBuddyException("JsonMappingException while getting Friend location");
+			throw new MyBuddyException("JsonMappingException while getting Friend location" + e.getMessage()  );
 		} catch (IOException e) 
 		{
-			throw new MyBuddyException("IOException while getting Friend location");
+			throw new MyBuddyException("IOException while getting Friend location" + e.getMessage()  );
 		}
 		return getResponse(response);
 
 	}
-	
-	
+
+	@GET
+	@Path(FindMyBuddyConstants.PATH_GET_MY_IPDETAILS)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getIpAddressGeoLoacation(String ipAddress){
+		String response;
+		try {
+			response = locationService.getIpAddressGeoLoacation(ipAddress);
+		} catch (JSONException e) {
+			throw new MyBuddyException("JSONException while getting ip location" + e.getMessage()  );
+		} catch (IOException e) {
+			throw new MyBuddyException("IOException while getting ip location" + e.getMessage()  );
+		}
+		return Response.status(200).entity(response).build();
+	}
+
 
 	@GET
 	public Response getHealthCheck(){
 		return Response.status(200).entity("OK").build();
 	}
-	
+
 	public Response getResponse(String messge){
 		return Response.status(200).entity(messge).header("Access-Control-Allow-0rigin", "*").header("Access-Control-Allow-Methods", "API, CRUNCHIFYGET, GET, POST, PUT, UPDATE, OPTIONS").build();
 	}

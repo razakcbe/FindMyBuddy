@@ -22,5 +22,7 @@ public interface MyLocationService {
 	public void saveMyDetails(String myDetails) throws JsonParseException, JsonMappingException, IOException;
 	
 	public String getMyLocation(String mobNo) throws JsonGenerationException, JsonMappingException, IOException;
+	
+	public String getIpAddressGeoLoacation(String ipAddress)throws JSONException, IOException ;
 
 }

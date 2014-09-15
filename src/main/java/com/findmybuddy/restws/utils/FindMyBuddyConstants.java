@@ -11,4 +11,6 @@ public class FindMyBuddyConstants {
 	public static final String PATH_GET_MY_DETAILS = "getmylocation/{mobileNo}";
 
 	public static final String PATH_GET_MY_BUDDY_DETAILS = "getmybuddybdetail/{mobileNo}";
+	
+	public static final String PATH_GET_MY_IPDETAILS = "getmyIplocation/{ipAddress}";
 }
